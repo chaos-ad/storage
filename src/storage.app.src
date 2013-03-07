@@ -6,7 +6,7 @@
         kernel,
         stdlib,
         lager,
-        eredis
+        sharded_eredis
     ]},
     {mod, { storage_app, [] }},
     {env, []}
