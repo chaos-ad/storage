@@ -39,7 +39,7 @@ exists(Key) ->
     case sharded_eredis:q(["EXISTS", str(Key)]) of
         {ok, <<"1">>} -> true;
         {ok, <<"0">>} -> false;
-        {error, Error} -> error(Error)
+        {error, Error} -> {error, Error}
     end.
 
 exists(GameID, UserID, Key) ->
@@ -49,8 +49,8 @@ exists(GameID, UserID, Key) ->
 
 get(Key) ->
     case sharded_eredis:q(["GET", str(Key)]) of
-        {ok, Result} -> Result;
-        {error, Error} -> error(Error)
+        {ok, Value} -> Value;
+        {error, Error} -> {error, Error}
     end.
 
 get(GameID, UserID, Key) ->
@@ -61,7 +61,7 @@ get(GameID, UserID, Key) ->
 set(Key, Value) ->
     case sharded_eredis:q(["SET", str(Key), str(Value)]) of
         {ok, <<"OK">>} -> ok;
-        {error, Error} -> error(Error)
+        {error, Error} -> {error, Error}
     end.
 
 set(GameID, UserID, Key, Value) ->
@@ -72,7 +72,7 @@ set(GameID, UserID, Key, Value) ->
 del(Key) ->
     case sharded_eredis:q(["DEL", str(Key)]) of
         {ok, Result} -> list_to_integer(binary_to_list(Result));
-        {error, Error} -> error(Error)
+        {error, Error} -> {error, Error}
     end.
 
 del(GameID, UserID, Key) ->

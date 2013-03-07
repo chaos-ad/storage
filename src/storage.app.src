@@ -5,8 +5,12 @@
     {applications, [
         kernel,
         stdlib,
+        inets,
+        crypto,
         lager,
-        sharded_eredis
+        sharded_eredis,
+        mochiweb,
+        webmachine
     ]},
     {mod, { storage_app, [] }},
     {env, []}
