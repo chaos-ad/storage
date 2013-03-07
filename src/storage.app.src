@@ -9,7 +9,6 @@
         crypto,
         lager,
         sharded_eredis,
-        mochiweb,
         webmachine
     ]},
     {mod, { storage_app, [] }},

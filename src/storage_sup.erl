@@ -7,12 +7,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
--define(CHILD(I), {I, {I, start_link, []}, permanent, 60000, worker, [I]}).
--define(CHILD(I, Args), {I, {I, start_link, Args}, permanent, 60000, worker, [I]}).
--define(CHILD(I, Args, Role), {I, {I, start_link, Args}, permanent, 60000, Role, [I]}).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 start_link() ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
@@ -28,10 +22,14 @@ init([]) ->
                 {ip,        get_env(host, "0.0.0.0")},
                 {log_dir,   get_env(logs, "priv/logs")},
                 {dispatch,  [
-                    {["storage", "get", key], storage_web_resource, get},
-                    {["storage", "del", key], storage_web_resource, del},
-                    {["storage", "set", key, val], storage_web_resource, set},
-                    {["storage", "exists", key], storage_web_resource, exists}
+                    {["storage", "public", "get", key], storage_public_web_resource, get},
+                    {["storage", "public", "del", key], storage_public_web_resource, del},
+                    {["storage", "public", "set", key, val], storage_public_web_resource, set},
+                    {["storage", "public", "exists", key], storage_public_web_resource, exists},
+                    {["storage", "private", "get", gameid, userid, key], storage_private_web_resource, get},
+                    {["storage", "private", "del", gameid, userid, key], storage_private_web_resource, del},
+                    {["storage", "private", "set", gameid, userid, key, val], storage_private_web_resource, set},
+                    {["storage", "private", "exists", gameid, userid, key], storage_private_web_resource, exists}
                 ]}
             ]]},
             permanent, 5000, worker, dynamic}
